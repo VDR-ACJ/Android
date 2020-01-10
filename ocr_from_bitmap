@@ -1,0 +1,22 @@
+private void GetTextFromImageFunction(Bitmap bitmap) {
+        TextView showText_txt;
+        showText_txt = findViewById(R.id.txt_foto_info);
+        String ads="";
+        TextRecognizer textRecognizer;//=new TextRecognizer.Builder(getApplicationContext()).build();
+
+        Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+        textRecognizer = new TextRecognizer.Builder(this).build();
+
+        SparseArray<TextBlock> item = textRecognizer.detect(frame);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i=0; i<item.size(); i++){
+
+            stringBuilder.append(item.valueAt(i).getValue());
+
+        }
+
+        showText_txt.setText(stringBuilder.toString());
+      
+    }
