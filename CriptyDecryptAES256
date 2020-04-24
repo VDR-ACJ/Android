@@ -46,8 +46,7 @@ echo '</br></br></br>teste:'.$decrypted;
  
  
  ////============android==================////
- byte[] chaveteste=null;
-        try {
+ try {
             String secret = "abc";
             String message = "teste";
 
@@ -73,10 +72,10 @@ echo '</br></br></br>teste:'.$decrypted;
         try {
 
             // inicio base
-            String textonovo="braziliam";
+            String textonovo="braziliams";
             String Div64="xIJ1IuNd0lCQq262n7oduA==";
             String Dkey64 = "qdIhTif7UUTf1aoQeNMjl8mHs2w5jsqypOj68xc8hYc=";
-            SecretKeySpec DnewKey = new SecretKeySpec(Base64.decode(Dkey64,Base64.DEFAULT), "AES");
+            SecretKeySpec DnewKey = new SecretKeySpec(Base64.decode(Dkey64.replaceAll("\\r\\n|\\n", ""),Base64.DEFAULT), "AES");
             Cipher cipherd = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipherd.init(Cipher.ENCRYPT_MODE, DnewKey);
             byte[] ciphertextD = cipherd.doFinal(textonovo.getBytes());
@@ -84,7 +83,8 @@ echo '</br></br></br>teste:'.$decrypted;
             byte[] ivD = cipherd.getIV();
             String base64iv2=Base64.encodeToString(ivD,0);
             //fim base
-
+            String das="1CZWIyZk/CRxeShV4rFFgg==";
+            decrypt(Base64.decode(das.replaceAll("\\r\\n|\\n", ""),Base64.DEFAULT),DnewKey,Base64.decode("HD4pjg3rrcbLhUpyGWrIwA==",0));
 
 
             byte[] plaintext = texto.getBytes();
