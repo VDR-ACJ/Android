@@ -1,3 +1,49 @@
+function encrypt($plaintext, $password) {
+    $method = "AES-256-CBC";
+    $key = hash('sha256', $password, true);
+    $iv = openssl_random_pseudo_bytes(16);
+
+    $ciphertext = openssl_encrypt($plaintext, $method, $key, OPENSSL_RAW_DATA, $iv);
+    $hash = hash_hmac('sha256', $ciphertext . $iv, $key, true);
+
+    return $iv . $hash . $ciphertext;
+}
+
+function decrypt($ivHashCiphertext, $password) {
+    $method = "AES-256-CBC";
+    $iv = substr($ivHashCiphertext, 0, 16);
+    $hash = substr($ivHashCiphertext, 16, 32);
+    $ciphertext = substr($ivHashCiphertext, 48);
+    $key = hash('sha256', $password, true);
+
+    if (!hash_equals(hash_hmac('sha256', $ciphertext . $iv, $key, true), $hash)) return null;
+
+    return openssl_decrypt($ciphertext, $method,$key, OPENSSL_RAW_DATA, $iv);
+}
+
+
+$encrypted = encrypt('Plaintext string.', 'password'); // this yields a binary string
+echo base64_encode($encrypted).'</br></br>';
+echo decrypt($encrypted, 'password');
+
+
+//////////////////////////////////////////////////
+$ciphertext64 = "Y9los2R9oQEV2tQWXV15iQ==";
+$key64 = "qdIhTif7UUTf1aoQeNMjl8mHs2w5jsqypOj68xc8hYc=";
+
+$iv64="nhccIDmmbXEVHUBUcGW8qA==";
+
+//$key = base64_decode($key64, true);
+//$iv = base64_decode($iv64, true);
+$testeencrypta = openssl_encrypt('PTBR', 'AES-256-CBC', base64_decode($key64), OPENSSL_RAW_DATA, base64_decode($iv64));
+$decryptedteste = openssl_decrypt($testeencrypta, 'AES-256-CBC', base64_decode($key64), OPENSSL_RAW_DATA, base64_decode($iv64));
+echo '</br></br>decripta teste'.$decryptedteste;
+
+$decrypted = openssl_decrypt(base64_decode($ciphertext64), 'AES-256-CBC', base64_decode($key64), OPENSSL_RAW_DATA, base64_decode($iv64));
+echo '</br></br></br>teste:'.$decrypted; 
+ 
+ 
+ ////============android==================////
  byte[] chaveteste=null;
         try {
             String secret = "abc";
